@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QDialog, QMessageBox, QTableWidgetItem
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QKeyEvent
+from PyQt6.QtMultimedia import QSoundEffect
 from PyQt6 import QtCore
 from Calculadora_ui import Ui_Calculadora
 import math
@@ -25,28 +26,32 @@ class MainWindow(QDialog, Ui_Calculadora):
         with open("styles.qss", "r") as f:
             self.setStyleSheet(f.read())
 
+        # Cargar el sonido de clic
+        self.sonido_click = QSoundEffect()
+        self.sonido_click.setSource(QtCore.QUrl.fromLocalFile('click.wav'))
+
         # Conectar botones a funciones
-        self.boton0.clicked.connect(lambda: self.numero_presionado('0'))
-        self.boton1.clicked.connect(lambda: self.numero_presionado('1'))
-        self.boton2.clicked.connect(lambda: self.numero_presionado('2'))
-        self.boton3.clicked.connect(lambda: self.numero_presionado('3'))
-        self.boton4.clicked.connect(lambda: self.numero_presionado('4'))
-        self.boton5.clicked.connect(lambda: self.numero_presionado('5'))
-        self.boton6.clicked.connect(lambda: self.numero_presionado('6'))
-        self.boton7.clicked.connect(lambda: self.numero_presionado('7'))
-        self.boton8.clicked.connect(lambda: self.numero_presionado('8'))
-        self.boton9.clicked.connect(lambda: self.numero_presionado('9'))
-        self.botonComa.clicked.connect(lambda: self.numero_presionado('.'))
-        self.botonParentesisIzq.clicked.connect(lambda: self.numero_presionado('('))
-        self.botonParentesisDer.clicked.connect(lambda: self.numero_presionado(')'))
-        self.botonPorcentaje.clicked.connect(lambda: self.numero_presionado('%'))
+        self.boton0.clicked.connect(lambda: self.tecla_presionada('0'))
+        self.boton1.clicked.connect(lambda: self.tecla_presionada('1'))
+        self.boton2.clicked.connect(lambda: self.tecla_presionada('2'))
+        self.boton3.clicked.connect(lambda: self.tecla_presionada('3'))
+        self.boton4.clicked.connect(lambda: self.tecla_presionada('4'))
+        self.boton5.clicked.connect(lambda: self.tecla_presionada('5'))
+        self.boton6.clicked.connect(lambda: self.tecla_presionada('6'))
+        self.boton7.clicked.connect(lambda: self.tecla_presionada('7'))
+        self.boton8.clicked.connect(lambda: self.tecla_presionada('8'))
+        self.boton9.clicked.connect(lambda: self.tecla_presionada('9'))
+        self.botonComa.clicked.connect(lambda: self.tecla_presionada('.'))
+        self.botonParentesisIzq.clicked.connect(lambda: self.tecla_presionada('('))
+        self.botonParentesisDer.clicked.connect(lambda: self.tecla_presionada(')'))
+        self.botonPorcentaje.clicked.connect(lambda: self.tecla_presionada('%'))
         self.botonRaiz.clicked.connect(self.raiz_cuadrada)
         self.botonEliminar.clicked.connect(self.eliminar)
 
-        self.botonS.clicked.connect(lambda: self.operacion_presionada('+'))
-        self.botonR.clicked.connect(lambda: self.operacion_presionada('-'))
-        self.botonM.clicked.connect(lambda: self.operacion_presionada('*'))
-        self.botonD.clicked.connect(lambda: self.operacion_presionada('/'))
+        self.botonS.clicked.connect(lambda: self.tecla_presionada('+'))
+        self.botonR.clicked.connect(lambda: self.tecla_presionada('-'))
+        self.botonM.clicked.connect(lambda: self.tecla_presionada('*'))
+        self.botonD.clicked.connect(lambda: self.tecla_presionada('/'))
 
         self.BotonIgual.clicked.connect(self.calcular_resultado)
 
@@ -59,6 +64,66 @@ class MainWindow(QDialog, Ui_Calculadora):
         self.tablaOperaciones.setHorizontalHeaderLabels(["Operación", "Resultado"])
 
         self.show()
+
+    def tecla_presionada(self, tecla):
+        # Reproducir sonido de clic
+        self.sonido_click.play()
+        # Lógica para manejar la tecla presionada
+        if tecla in '0123456789.':
+            self.numero_presionado(tecla)
+        elif tecla in '+-*/%':
+            self.operacion_presionada(tecla)
+        elif tecla == '=':
+            self.calcular_resultado()
+        elif tecla == 'DEL':
+            self.eliminar()
+        elif tecla == '√':
+            self.raiz_cuadrada()
+
+    def keyPressEvent(self, event):
+        # Manejar las pulsaciones del teclado físico
+        if event.key() == QtCore.Qt.Key.Key_0:
+            self.tecla_presionada('0')
+        elif event.key() == QtCore.Qt.Key.Key_1:
+            self.tecla_presionada('1')
+        elif event.key() == QtCore.Qt.Key.Key_2:
+            self.tecla_presionada('2')
+        elif event.key() == QtCore.Qt.Key.Key_3:
+            self.tecla_presionada('3')
+        elif event.key() == QtCore.Qt.Key.Key_4:
+            self.tecla_presionada('4')
+        elif event.key() == QtCore.Qt.Key.Key_5:
+            self.tecla_presionada('5')
+        elif event.key() == QtCore.Qt.Key.Key_6:
+            self.tecla_presionada('6')
+        elif event.key() == QtCore.Qt.Key.Key_7:
+            self.tecla_presionada('7')
+        elif event.key() == QtCore.Qt.Key.Key_8:
+            self.tecla_presionada('8')
+        elif event.key() == QtCore.Qt.Key.Key_9:
+            self.tecla_presionada('9')
+        elif event.key() == QtCore.Qt.Key.Key_Period:
+            self.tecla_presionada('.')
+        elif event.key() == QtCore.Qt.Key.Key_Plus:
+            self.tecla_presionada('+')
+        elif event.key() == QtCore.Qt.Key.Key_Minus:
+            self.tecla_presionada('-')
+        elif event.key() == QtCore.Qt.Key.Key_Asterisk:
+            self.tecla_presionada('*')
+        elif event.key() == QtCore.Qt.Key.Key_Slash:
+            self.tecla_presionada('/')
+        elif event.key() == QtCore.Qt.Key.Key_Equal:
+            self.tecla_presionada('=')
+        elif event.key() == QtCore.Qt.Key.Key_Backspace:
+            self.tecla_presionada('DEL')
+        elif event.key() == QtCore.Qt.Key.Key_ParenLeft:
+            self.tecla_presionada('(')
+        elif event.key() == QtCore.Qt.Key.Key_ParenRight:
+            self.tecla_presionada(')')
+        elif event.key() == QtCore.Qt.Key.Key_Percent:
+            self.tecla_presionada('%')
+        elif event.key() == QtCore.Qt.Key.Key_R:
+            self.tecla_presionada('√')
 
     def numero_presionado(self, numero):
         # Lógica para manejar el número presionado
