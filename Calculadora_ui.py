@@ -15,6 +15,37 @@ class Ui_Calculadora(object):
         Calculadora.setEnabled(True)
         Calculadora.resize(600, 556)
         Calculadora.setMinimumSize(QtCore.QSize(600, 556))
+        Calculadora.setStyleSheet("\n"
+"QDialog {\n"
+"    background-color: #444040;\n"
+"}\n"
+"QPushButton {\n"
+"    background-color: #e58900;\n"
+"    color: rgb(255, 255, 255);\n"
+"    font-size: 26px;\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #7f4c00;\n"
+"}\n"
+"QLCDNumber {\n"
+"    background-color: rgb(49, 53, 69);\n"
+"    color: rgb(255, 255, 255);\n"
+"}\n"
+"QTableWidget {\n"
+"    background-color: rgb(49, 53, 69);\n"
+"    color: rgb(255, 255, 255);\n"
+"    font-size: 16px;\n"
+"}\n"
+"/* Esta es la parte del encabezado de la tabla */\n"
+"QHeaderView::section {\n"
+"    background-color: #555555;\n"
+"    color: #ffffff;\n"
+"    padding: 4px;\n"
+"    border: 1px solid #444444;\n"
+"}\n"
+"")
         self.horizontalLayout = QtWidgets.QHBoxLayout(Calculadora)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.ColumnaPrincipalApp = QtWidgets.QVBoxLayout()
@@ -23,12 +54,12 @@ class Ui_Calculadora(object):
         self.ColumnaPrincipalApp.setSpacing(6)
         self.ColumnaPrincipalApp.setObjectName("ColumnaPrincipalApp")
         self.lcdNumber = QtWidgets.QLCDNumber(parent=Calculadora)
-        self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.SegmentStyle.Filled)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.lcdNumber.sizePolicy().hasHeightForWidth())
         self.lcdNumber.setSizePolicy(sizePolicy)
+        self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.SegmentStyle.Filled)
         self.lcdNumber.setObjectName("lcdNumber")
         self.ColumnaPrincipalApp.addWidget(self.lcdNumber)
         self.Botones = QtWidgets.QGridLayout()
@@ -93,9 +124,12 @@ class Ui_Calculadora(object):
         self.botonS = QtWidgets.QPushButton(parent=Calculadora)
         self.botonS.setObjectName("botonS")
         self.Botones.addWidget(self.botonS, 4, 3, 1, 1)
+        self.botonCE = QtWidgets.QPushButton(parent=Calculadora)
+        self.botonCE.setObjectName("botonCE")
+        self.Botones.addWidget(self.botonCE, 5, 0, 1, 2)
         self.BotonIgual = QtWidgets.QPushButton(parent=Calculadora)
         self.BotonIgual.setObjectName("BotonIgual")
-        self.Botones.addWidget(self.BotonIgual, 5, 0, 1, 4)
+        self.Botones.addWidget(self.BotonIgual, 5, 2, 1, 2)
         self.ColumnaPrincipalApp.addLayout(self.Botones)
         self.horizontalLayout.addLayout(self.ColumnaPrincipalApp)
         self.tablaOperaciones = QtWidgets.QTableWidget(parent=Calculadora)
@@ -104,6 +138,7 @@ class Ui_Calculadora(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tablaOperaciones.sizePolicy().hasHeightForWidth())
         self.tablaOperaciones.setSizePolicy(sizePolicy)
+        self.tablaOperaciones.setStyleSheet("")
         self.tablaOperaciones.setObjectName("tablaOperaciones")
         self.tablaOperaciones.setColumnCount(2)
         self.tablaOperaciones.setRowCount(0)
@@ -136,9 +171,10 @@ class Ui_Calculadora(object):
         self.boton3.setText(_translate("Calculadora", "3"))
         self.botonR.setText(_translate("Calculadora", "-"))
         self.boton0.setText(_translate("Calculadora", "0"))
-        self.botonComa.setText(_translate("Calculadora", "."))
+        self.botonComa.setText(_translate("Calculadora", ","))
         self.botonPorcentaje.setText(_translate("Calculadora", "%"))
         self.botonS.setText(_translate("Calculadora", "+"))
+        self.botonCE.setText(_translate("Calculadora", "CE"))
         self.BotonIgual.setText(_translate("Calculadora", "="))
         item = self.tablaOperaciones.horizontalHeaderItem(0)
         item.setText(_translate("Calculadora", "Operación"))

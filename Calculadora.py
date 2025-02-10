@@ -22,10 +22,6 @@ class MainWindow(QDialog, Ui_Calculadora):
         # Establecer tamaño mínimo de la ventana
         self.setMinimumSize(600, 556)
 
-        # Cargar estilos desde un archivo externo
-        with open("styles.qss", "r") as f:
-            self.setStyleSheet(f.read())
-
         # Cargar el sonido de clic
         self.sonido_click = QSoundEffect()
         self.sonido_click.setSource(QtCore.QUrl.fromLocalFile('click.wav'))
@@ -47,6 +43,7 @@ class MainWindow(QDialog, Ui_Calculadora):
         self.botonPorcentaje.clicked.connect(lambda: self.tecla_presionada('%'))
         self.botonRaiz.clicked.connect(self.raiz_cuadrada)
         self.botonEliminar.clicked.connect(self.eliminar)
+        self.botonCE.clicked.connect(self.borrar_todo)
 
         self.botonS.clicked.connect(lambda: self.tecla_presionada('+'))
         self.botonR.clicked.connect(lambda: self.tecla_presionada('-'))
@@ -64,6 +61,13 @@ class MainWindow(QDialog, Ui_Calculadora):
         self.tablaOperaciones.setHorizontalHeaderLabels(["Operación", "Resultado"])
 
         self.show()
+
+    def borrar_todo(self):
+        # Lógica para borrar todo
+        self.primer_numero = ''
+        self.segundo_numero = ''
+        self.operacion = ''
+        self.lcdNumber.display('')
 
     def tecla_presionada(self, tecla):
         # Reproducir sonido de clic
@@ -113,6 +117,8 @@ class MainWindow(QDialog, Ui_Calculadora):
         elif event.key() == QtCore.Qt.Key.Key_Slash:
             self.tecla_presionada('/')
         elif event.key() == QtCore.Qt.Key.Key_Equal:
+            self.tecla_presionada('=')
+        elif event.key() == QtCore.Qt.Key.Key_Enter:
             self.tecla_presionada('=')
         elif event.key() == QtCore.Qt.Key.Key_Backspace:
             self.tecla_presionada('DEL')
